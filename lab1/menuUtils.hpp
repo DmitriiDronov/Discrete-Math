@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MENU_UTILS_HPP_
+#define MENU_UTILS_HPP_
 #include <iostream>
 #include <vector>
 #include "graphs.hpp"
@@ -11,3 +12,4 @@ inline void PrintMenu()
 void handleChoice(const int choice);
 void clearScreen();
 void pause();
+#endif
