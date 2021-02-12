@@ -3,6 +3,7 @@
 #include <list>
 #include <memory>
 #include <vector>
+#include <iostream>
 
 class Graph
 {
@@ -12,6 +13,7 @@ private:
 public:
     Graph(int vertices);
     void addEdge(int src, int dest);
+    friend std::ostream& operator<<(std::ostream &os, const Graph &rhs);
 };
 
 class MatrixOfIncidence
