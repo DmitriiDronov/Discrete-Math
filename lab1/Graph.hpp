@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include <iostream>
+#include "Matrix.hpp"
 
 class Graph
 {
@@ -14,21 +15,8 @@ public:
     Graph(int vertices);
     void addEdge(int src, int dest);
     friend std::ostream& operator<<(std::ostream &os, const Graph &rhs);
-};
-
-class MatrixOfIncidence
-{
-private:
-    std::vector<std::vector<short int>> matrix;
-    //row and columns
-    int peaks, edges;
-public:
-    MatrixOfIncidence(int numOfPeaks, int numOfEdges);
-};
-
-//need to create virual class for both matrices
-class AdjacencyMatrix
-{
+    MatrixOfIncidence toMatrixOfIncidence();
+    AdjacencyMatrix toAdjacencyMatrix();
 };
 
 #endif

@@ -1,6 +1,13 @@
 #include "Graph.hpp"
 #include <iostream>
+#include <iomanip>
 #include "menuUtils.hpp"
+
+std::vector<Graph>& Graphs()
+{
+    static std::vector<Graph> Graphs;
+    return Graphs;
+}
 
 Graph::Graph(int vertices) :
     numVertices(vertices)
@@ -46,25 +53,14 @@ std::ostream& operator<<(std::ostream &os, const Graph &rhs)
     return os;
 }
 
-MatrixOfIncidence::MatrixOfIncidence(int numOfPeaks, int numOfEdges) :
-    peaks(numOfPeaks), edges(numOfEdges)
+//TODO
+MatrixOfIncidence Graph::toMatrixOfIncidence()
 {
-    short int num{0};
-    for (int i{0}; i < peaks; ++i)
-    {
-        std::vector<short int> vec;
-        for (int j{0}; j < edges; ++j)
-        {
-            do
-            {
-                std::cout << "[" << i << "]" << "[" << j << "] = ";
-                std::cin >> num;
-                if (num != 1 && num != -1 && num != 0)
-                    std::cout << "Invalid number" << std::endl;
-                else
-                    vec.push_back(num);
-            } while (num != 1 && num != -1 && num != 0);
-        }
-        matrix.push_back(vec);
-    }
+    return MatrixOfIncidence(0, 0);
+}
+
+//TODO
+AdjacencyMatrix Graph::toAdjacencyMatrix()
+{
+    return AdjacencyMatrix(0);
 }
