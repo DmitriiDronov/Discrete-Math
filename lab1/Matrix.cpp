@@ -1,9 +1,10 @@
-#include "Matrix.hpp"
 #include "menuUtils.hpp"
 #include <iomanip>
+#include "Graph.hpp"
+#include "Matrix.hpp"
 
 MatrixOfIncidence::MatrixOfIncidence(int numOfPeaks, int numOfEdges) :
-    peaks(numOfPeaks), edges(numOfEdges)
+    Matrix(), peaks(numOfPeaks), edges(numOfEdges)
 {
     clearScreen();
     short int num{0};
@@ -26,22 +27,23 @@ MatrixOfIncidence::MatrixOfIncidence(int numOfPeaks, int numOfEdges) :
     }
 }
 
-std::ostream& operator<<(std::ostream& os, const MatrixOfIncidence& rhs)
+std::ostream& operator<<(std::ostream& os, const Matrix& rhs)
 {
-    for (int i{0}; i < rhs.peaks; ++i)
+    for (int i{0}; i < rhs.matrix.size(); ++i)
         os << std::setw(5) << "V" << i;
-    for (int i{0}; i < rhs.edges; ++i)
+    for (int i{0}; i < rhs.matrix.size(); ++i)
     {
         os << std::setw(5) << "E" << i;
-        for (int j{0}; j < rhs.peaks; ++j)
+        for (int j{0}; j < rhs.matrix.at(i).size(); ++j)
         {
             os << std::setw(5) << rhs.matrix.at(i).at(j);
         }
     }
+    return os;
 }
 
 AdjacencyMatrix::AdjacencyMatrix(int numOfVertices) :
-    vertices(numOfVertices)
+    Matrix(), vertices(numOfVertices)
 {
     clearScreen();
     short int num{0};
@@ -86,19 +88,4 @@ void MatrixOfIncidence::edit()
 Graph MatrixOfIncidence::toAdjacencyList()
 {
     return Graph(0);
-}
-
-std::ostream& operator<<(std::ostream &os, const AdjacencyMatrix &rhs)
-{
-    for (int i{0}; i < rhs.vertices; ++i)
-        os << std::setw(5) << "V" << i;
-    os << std::endl;
-    for (int i{0}; i < rhs.vertices; ++i)
-    {
-        os << std::setw(5) << "V" << i;
-        for (int j{0}; j < rhs.vertices; ++j)
-        {
-            os << std::setw(5) << rhs.matrix.at(i).at(j);
-        }
-    }
 }

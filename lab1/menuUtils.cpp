@@ -1,5 +1,8 @@
 #include "menuUtils.hpp"
-#include "graphs.hpp"
+#include "Graph.hpp"
+#include "Matrix.hpp"
+#include <iostream>
+#include <string>
 
 //here will be nested switch statements depending on the user choice
 void handleChoice(const int choice) 
@@ -26,13 +29,11 @@ void handleChoice(const int choice)
 			std::cin >> edges;
 			if (nodes == 0 && edges == 0)
 			{
-				IncidenceMatrix zeroMx;
-				incidentMartixes().push_back(zeroMx);
+				MatrixOfIncidence zeroMx(0, 0);
 			}
 			else
 			{
-				IncidenceMatrix matrix(edges, nodes);
-				incidentMartixes().push_back(matrix);
+				MatrixOfIncidence matrix(edges, nodes);
 			}
 			break;
 		case 2:
@@ -58,11 +59,6 @@ void handleChoice(const int choice)
 		case 1:
 			break;
 		case 2:
-			for (unsigned int i{ 0 }; i < incidentMartixes().size(); ++i)
-			{
-				std::cout << incidentMartixes().at(i);
-				std::cout << "------------------------\n";
-			}
 			break;
 		case 3:
 			break;

@@ -24,8 +24,8 @@ Graph::Graph(int vertices) :
             std::cin >> numOfInputs;
             for (int j = 0; j < numOfInputs; ++j)
             {
-                std::cin >> vertice;
                 std::cout << "Enter vertices correstonding to vertice " << i << std::endl;
+                std::cin >> vertice;
                 (adjList.get() + i)->push_back(vertice);
             }
         }

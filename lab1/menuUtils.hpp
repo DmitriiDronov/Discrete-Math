@@ -2,7 +2,6 @@
 #define MENU_UTILS_HPP_
 #include <iostream>
 #include <vector>
-#include "graphs.hpp"
 
 //for optimization here inline. We define it in the header file because of linker error.
 inline void PrintMenu()
