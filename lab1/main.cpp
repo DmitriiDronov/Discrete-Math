@@ -3,8 +3,8 @@
 
 int main(void)
 {
-    // Graph gr(3);
-    // std::cout << gr; 
+    Graph gr(3);
+    std::cout << gr << std::endl; 
     AdjacencyMatrix adj(3);
     MatrixOfIncidence inc(3, 3);
     std::cout << adj << std::endl << inc << std::endl;

@@ -29,15 +29,19 @@ MatrixOfIncidence::MatrixOfIncidence(int numOfPeaks, int numOfEdges) :
 
 std::ostream& operator<<(std::ostream& os, const Matrix& rhs)
 {
-    for (int i{0}; i < rhs.matrix.size(); ++i)
+    os << std::setw(5) << " ";
+    for (int i{1}; i <= rhs.matrix.size(); ++i)
         os << std::setw(5) << "V" << i;
+
+    os << std::endl;
     for (int i{0}; i < rhs.matrix.size(); ++i)
     {
-        os << std::setw(5) << "E" << i;
+        os << std::setw(5) << "E" << i+1;
         for (int j{0}; j < rhs.matrix.at(i).size(); ++j)
         {
             os << std::setw(5) << rhs.matrix.at(i).at(j);
         }
+        os << std::endl;
     }
     return os;
 }

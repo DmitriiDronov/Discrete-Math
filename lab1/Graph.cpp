@@ -15,8 +15,10 @@ Graph::Graph(int vertices) :
     try
     {
         this->adjList = std::make_shared<std::list<int>>(numVertices);
-        unsigned int vertice{0};
+        //number of verices to input
         unsigned int numOfInputs{0};
+        // the vertice to imput
+        unsigned int vertice{0};
         for (int i{0}; i < numVertices; ++i)
         {
             clearScreen();

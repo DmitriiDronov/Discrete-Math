@@ -11,8 +11,10 @@ void handleChoice(const int choice)
 	clearScreen(); //this can be a problem, because now software is OS dependable. fix? maybe define statens here can help
 	unsigned int innerChoice{ 0 };
 	
+	//used for graph creation 
 	unsigned int nodes{ 0 };
 	unsigned int edges{ 0 };
+	unsigned int vertices{ 0 };
 	switch (choice)
 	{
 	case 1:
@@ -28,21 +30,27 @@ void handleChoice(const int choice)
 			std::cout << "Enter edges quanity: ";
 			std::cin >> edges;
 			if (nodes == 0 && edges == 0)
-			{
 				MatrixOfIncidence zeroMx(0, 0);
-			}
 			else
-			{
 				MatrixOfIncidence matrix(edges, nodes);
-			}
 			break;
 		case 2:
-			std::cout << std::endl;
+			std::cout << "Enter the number of vertices: ";
+			std::cin >> vertices;
+			if (vertices == 0)
+				AdjacencyMatrix zeroMx(vertices);
+			else
+				AdjacencyMatrix adjacencyMatrix(vertices);
 			break;
 		case 3:
-			std::cout << std::endl;
+			std::cout << "Enter the number of vertices: ";
+			if (vertices == 0)
+				Graph zeroGrList(vertices);
+			else
+				Graph grList(vertices);
 			break;
 		default:
+			std::cout << "Invalid choice" << std::endl;
 			break;
 		}
 	case 2:
@@ -52,24 +60,27 @@ void handleChoice(const int choice)
 		break;
 		std::cout << std::endl;
 	case 4:
-		std::cout << "1. Print all\n2. Print Incidence Matrixes\n3. Print another...\n";
+		std::cout << "1. Print lists\n2. Print Incidence Matrixes\n3. Print adjacency Matrixes\n";
 		std::cin >> innerChoice;
 		switch (innerChoice)
 		{
 		case 1:
+			//not very efficient, but we have no choice
+			for (int i{ 0 }; i < Graphs().size(); ++i)
+				std::cout << Graphs().at(i);
 			break;
 		case 2:
 			break;
 		case 3:
 			break;
 		default:
-			std::cout << "Invalid choice\n";
+			std::cout << "Invalid choice" << std::endl;
 			break;
 		}
 		pause();
 		break;
 	default:
-		std::cout << "Invalid choice\n";
+		std::cout << "Invalid choice" << std::endl;
 		break;
 	}
 }

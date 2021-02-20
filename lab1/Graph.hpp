@@ -19,4 +19,6 @@ public:
     AdjacencyMatrix toAdjacencyMatrix();
 };
 
+std::vector<Graph>& Graphs();
+
 #endif
