@@ -79,6 +79,8 @@ void handleChoice(const int choice)
 		}
 		pause();
 		break;
+	case 0:
+		break;
 	default:
 		std::cout << "Invalid choice" << std::endl;
 		break;

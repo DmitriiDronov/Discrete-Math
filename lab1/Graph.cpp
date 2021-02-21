@@ -14,22 +14,26 @@ Graph::Graph(int vertices) :
 {
     try
     {
-        this->adjList = std::make_shared<std::list<int>>(numVertices);
+        this->adjList = std::make_shared<std::vector<std::list<int>>>();
         //number of verices to input
-        unsigned int numOfInputs{0};
-        // the vertice to imput
-        unsigned int vertice{0};
-        for (int i{0}; i < numVertices; ++i)
+        unsigned int numOfInputs{ 0 };
+        // the vertice to input
+        unsigned int vertice{ 0 };
+
+        for (int i{ 0 }; i < vertices; ++i)
         {
             clearScreen();
-            std::cout << "Enter how many vertices you want to input in vertice " << i << ": " << std::endl;
+            std::cout << "Enter how many vertices you want to input in vertice " << i + 1<< ": " << std::endl;
             std::cin >> numOfInputs;
-            for (int j = 0; j < numOfInputs; ++j)
+
+            std::list<int> list;
+            for (int j{ 0 }; j < numOfInputs; ++j)
             {
-                std::cout << "Enter vertices correstonding to vertice " << i << std::endl;
+                std::cout << "Enter vertices correstonding to vertice " << i + 1 << std::endl;
                 std::cin >> vertice;
-                (adjList.get() + i)->push_back(vertice);
+                list.push_back(vertice);
             }
+            adjList->push_back(list);
         }
         
     }
@@ -43,13 +47,12 @@ Graph::Graph(int vertices) :
 
 std::ostream& operator<<(std::ostream &os, const Graph &rhs)
 {
-    for (int i{0}; i < rhs.numVertices; ++i)
+    for (int i { 0 }; i < rhs.adjList->size(); ++i)
     {
-        os << i << ": ";
-        for (auto elem : *(rhs.adjList.get() + i))
-        {
+        os << i + 1 << ": ";
+        for (auto elem : rhs.adjList->at(i))
             os << elem << "-";
-        }
+        os << "end" << std::endl;
     }
     os << std::endl;
     return os;
