@@ -3,6 +3,53 @@
 #include "Graph.hpp"
 #include "Matrix.hpp"
 
+//to test
+void Matrix::edit()
+{
+    clearScreen();
+    std::cout << *this;
+
+    int choice{ 0 };
+    unsigned int n{ 0 }, m{ 0 };
+    unsigned int val{ 0 };
+    do
+    {
+        std::cout << "Enter element position to edit [n][m]: ";
+        std::cin >> n >> m;
+        std::cout << "Enter a new value: ";
+        std::cin >> val;
+        if (val != 0 || val != 1)
+            std::cout << "Please enter a value 0 or 1" << std::endl;
+        else
+            this->matrix.at(n).at(m) = val;
+        clearScreen();
+        std::cout << *this;
+        std::cout << "If you want to stop editing press 0, if not enter 1" << std::endl;
+        std::cin >> choice;
+    } while (choice != 0);
+
+    return;
+}
+
+std::ostream& operator<<(std::ostream& os, const Matrix& rhs)
+{
+    os << std::setw(5) << " ";
+    for (int i{1}; i <= rhs.matrix.size(); ++i)
+        os << std::setw(5) << "V" << i;
+
+    os << std::endl;
+    for (int i{0}; i < rhs.matrix.size(); ++i)
+    {
+        os << std::setw(5) << "E" << i+1;
+        for (int j{0}; j < rhs.matrix.at(i).size(); ++j)
+        {
+            os << std::setw(5) << rhs.matrix.at(i).at(j);
+        }
+        os << std::endl;
+    }
+    return os;
+}
+
 MatrixOfIncidence::MatrixOfIncidence(int numOfPeaks, int numOfEdges) :
     Matrix(), peaks(numOfPeaks), edges(numOfEdges)
 {
@@ -25,25 +72,6 @@ MatrixOfIncidence::MatrixOfIncidence(int numOfPeaks, int numOfEdges) :
         }
         matrix.push_back(vec);
     }
-}
-
-std::ostream& operator<<(std::ostream& os, const Matrix& rhs)
-{
-    os << std::setw(5) << " ";
-    for (int i{1}; i <= rhs.matrix.size(); ++i)
-        os << std::setw(5) << "V" << i;
-
-    os << std::endl;
-    for (int i{0}; i < rhs.matrix.size(); ++i)
-    {
-        os << std::setw(5) << "E" << i+1;
-        for (int j{0}; j < rhs.matrix.at(i).size(); ++j)
-        {
-            os << std::setw(5) << rhs.matrix.at(i).at(j);
-        }
-        os << std::endl;
-    }
-    return os;
 }
 
 AdjacencyMatrix::AdjacencyMatrix(int numOfVertices) :
@@ -70,32 +98,10 @@ AdjacencyMatrix::AdjacencyMatrix(int numOfVertices) :
     }
 }
 
-//To test
-void AdjacencyMatrix::edit()
+inline AdjacencyMatrix::AdjacencyMatrix(std::vector<std::vector<short int>> matrix) :
+    Matrix(), vertices(matrix.at(0).size())
 {
-    clearScreen();
-    std::cout << *this;
-
-    int choice{ 0 };
-    unsigned int n{ 0 }, m{ 0 };
-    unsigned int val{ 0 };
-    do
-    {
-        std::cout << "Enter element position to edit [n][m]: ";
-        std::cin >> n >> m;
-        std::cout << "Enter a new value: ";
-        std::cin >> val;
-        if (val != 0 || val != 1)
-            std::cout << "Please enter a value 0 or 1" << std::endl;
-        else
-            this->matrix.at(n).at(m) = val;
-        clearScreen();
-        std::cout << *this;
-        std::cout << "If you want to stop editing press 0, if not enter 1" << std::endl;
-        std::cin >> choice;
-    } while (choice != 0);
-    
-    return;
+    this->matrix = matrix;
 }
 
 //To test
@@ -128,14 +134,34 @@ Graph AdjacencyMatrix::toAdjacencyList()
     return Graph(adjList, this->vertices);
 }
 
-//TODO
-void MatrixOfIncidence::edit()
+//to test 
+//https://stackoverflow.com/questions/22380139/how-do-you-transform-adjacency-matrices-to-incidence-matrices-and-vice-versa
+AdjacencyMatrix MatrixOfIncidence::toAdjacencyMatrix()
 {
-    return;
+    std::vector<std::vector<short int>> adjacency;
+    int vertices = this->peaks;
+
+    for (int edge = 0; edge < this->edges; ++edge)
+    {
+        int a = -1, b = -1, vertex = 0;
+        for (; vertex < vertices && a == -1; ++vertex) 
+            if (this->matrix.at(edge).at(vertex)) 
+                a = vertex;
+        for (; vertex < vertices && b == -1; ++vertex) 
+            if (this->matrix.at(edge).at(vertex)) 
+                b = vertex;
+        if (b == -1)   
+            b = a;
+        adjacency.at(a).at(b) = adjacency.at(b).at(a) = 1;
+    }
+    return AdjacencyMatrix(adjacency);
 }
 
-//TODO
+//TO test
+//I think we need to convert matrix of incidence to adjacency matrix and then convert
+//to the adjacency list
 Graph MatrixOfIncidence::toAdjacencyList()
 {
-    return Graph(0);
+    AdjacencyMatrix matrix = this->toAdjacencyMatrix();
+    return matrix.toAdjacencyList();
 }

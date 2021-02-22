@@ -7,7 +7,7 @@ class Graph;
 class Matrix
 {
 public:
-    virtual void edit() = 0;
+    virtual void edit();
     virtual Graph toAdjacencyList() = 0;
     friend std::ostream& operator<<(std::ostream &os, const Matrix &rhs);
 protected:
@@ -21,8 +21,9 @@ private:
     int peaks, edges;
 public:
     MatrixOfIncidence(int numOfPeaks, int numOfEdges);
-    void edit(void) override;
+    //void edit(void) override;
     Graph toAdjacencyList() override;
+    AdjacencyMatrix toAdjacencyMatrix();
 };
 
 class AdjacencyMatrix : public Matrix
@@ -31,7 +32,8 @@ private:
     int vertices;
 public:
     AdjacencyMatrix(int numOfVertices);
-    void edit(void) override;
+    AdjacencyMatrix(std::vector<std::vector<short int>> matrix);
+    //void edit(void) override;
     Graph toAdjacencyList() override;
 };
 

@@ -17,48 +17,65 @@ void handleChoice(const int choice)
 	unsigned int vertices{ 0 };
 	switch (choice)
 	{
+	//input a graph
 	case 1:
 		std::cout << "1. The matrix of incidence\n2. The adjacency matrix\n3. The adjacency list" << std::endl;
 		std::cin >> innerChoice;
 		clearScreen();
 		switch (innerChoice)
 		{
+		//input incidence matrix
 		case 1:
 			std::cout << "Enter nodes quanity: ";
 			std::cin >> nodes;
 
 			std::cout << "Enter edges quanity: ";
 			std::cin >> edges;
-			if (nodes == 0 && edges == 0)
-				MatrixOfIncidence zeroMx(0, 0);
+			if (nodes != 0 && edges != 0)
+			{
+				MatrixOfIncidence incMatrix(edges, nodes);
+				Graphs().push_back(incMatrix.toAdjacencyList());	
+			}
 			else
-				MatrixOfIncidence matrix(edges, nodes);
+				std::cerr << "Zero matrix creation" << std::endl;
 			break;
+		//input adjacency matrix
 		case 2:
 			std::cout << "Enter the number of vertices: ";
 			std::cin >> vertices;
-			if (vertices == 0)
-				AdjacencyMatrix zeroMx(vertices);
-			else
+			if (vertices != 0)
+			{
 				AdjacencyMatrix adjacencyMatrix(vertices);
+				Graphs().push_back(adjacencyMatrix.toAdjacencyList());
+			}
+			else
+				std::cerr << "Zero matrix creation" << std::endl;
 			break;
+		//input adjacency list
 		case 3:
 			std::cout << "Enter the number of vertices: ";
-			if (vertices == 0)
-				Graph zeroGrList(vertices);
-			else
+			std::cin >> vertices;
+			if (vertices != 0)
+			{
 				Graph grList(vertices);
+				Graphs().push_back(grList);
+			}
+			else
+				std::cerr << "Zero matrix creation" << std::endl;
 			break;
 		default:
 			std::cout << "Invalid choice" << std::endl;
 			break;
 		}
+	//transform matrix from one to another
 	case 2:
 		break;
 		std::cout << std::endl;
+	//edit a graph
 	case 3:
 		break;
 		std::cout << std::endl;
+	//display data
 	case 4:
 		std::cout << "1. Print lists\n2. Print Incidence Matrixes\n3. Print adjacency Matrixes\n";
 		std::cin >> innerChoice;

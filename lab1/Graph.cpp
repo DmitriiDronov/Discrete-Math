@@ -51,7 +51,7 @@ Graph::Graph(AdjacencyMatrix matrix)
 }
 
 inline Graph::Graph(std::shared_ptr<AdjacencyList> adjListPtr, int vertices) :
-    adjList(adjListPtr), numVertices(vertices) 
+    numVertices(vertices), adjList(adjListPtr) 
 {
     return;
 }
