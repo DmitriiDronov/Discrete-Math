@@ -70,16 +70,62 @@ AdjacencyMatrix::AdjacencyMatrix(int numOfVertices) :
     }
 }
 
-//TODO
+//To test
 void AdjacencyMatrix::edit()
 {
+    clearScreen();
+    std::cout << *this;
+
+    int choice{ 0 };
+    unsigned int n{ 0 }, m{ 0 };
+    unsigned int val{ 0 };
+    do
+    {
+        std::cout << "Enter element position to edit [n][m]: ";
+        std::cin >> n >> m;
+        std::cout << "Enter a new value: ";
+        std::cin >> val;
+        if (val != 0 || val != 1)
+            std::cout << "Please enter a value 0 or 1" << std::endl;
+        else
+            this->matrix.at(n).at(m) = val;
+        clearScreen();
+        std::cout << *this;
+        std::cout << "If you want to stop editing press 0, if not enter 1" << std::endl;
+        std::cin >> choice;
+    } while (choice != 0);
+    
     return;
 }
 
-//TODO
+//To test
 Graph AdjacencyMatrix::toAdjacencyList()
 {
-    return Graph(0);
+    std::shared_ptr<AdjacencyList> adjList;
+    try
+    {
+        adjList = std::make_shared<AdjacencyList>();
+        //we need to fill vector with empty lists
+        for (int i{ 0 }; i < this->vertices; ++i)
+        {
+            std::list<int> temp;
+            adjList->push_back(temp);
+        }
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    
+    for (int i{ 0 }; i < this->matrix.size(); ++i)
+    {
+        for(int j{ 0 }; j < this->matrix.at(i).size(); ++i)
+        {
+            if (this->matrix.at(i).at(j) == 1)
+                adjList->at(i).push_back(j);
+        }
+    }
+    return Graph(adjList, this->vertices);
 }
 
 //TODO

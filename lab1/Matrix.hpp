@@ -2,6 +2,7 @@
 #define MATRIX_HPP_H
 #include "Graph.hpp"
 class Graph;
+
 //this is abstract interface class
 class Matrix
 {

@@ -6,17 +6,19 @@
 #include <iostream>
 #include "Matrix.hpp"
 
-//a shared pointer to the vector containing lists
-typedef std::shared_ptr<std::vector<std::list<int>>> AdjacencyList;
+typedef std::vector<std::list<int>> AdjacencyList;
 
 class Graph
 {
 private:
     int numVertices;
-    AdjacencyList adjList;
-    // std::shared_ptr<std::list<int>> adjList;
+    std::shared_ptr<AdjacencyList> adjList;
 public:
     Graph(int vertices);
+    //to test
+    Graph(std::shared_ptr<AdjacencyList> adjListPtr, int vertices);
+    //to test
+    Graph(AdjacencyMatrix matrix);
     void addEdge(int src, int dest);
     friend std::ostream& operator<<(std::ostream &os, const Graph &rhs);
     MatrixOfIncidence toMatrixOfIncidence();
