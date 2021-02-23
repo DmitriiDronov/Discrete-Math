@@ -3,26 +3,24 @@
 #include "Graph.hpp"
 #include "Matrix.hpp"
 
-//to test
+//edits a Matrix 
 void Matrix::edit()
 {
-    clearScreen();
-    std::cout << *this;
-
     int choice{ 0 };
     unsigned int n{ 0 }, m{ 0 };
     unsigned int val{ 0 };
     do
     {
-        std::cout << "Enter element position to edit [n][m]: ";
+        clearScreen();
+        std::cout << *this;
+        std::cout << "Enter element position to edit [r][c] separated by space: ";
         std::cin >> n >> m;
         std::cout << "Enter a new value: ";
         std::cin >> val;
-        if (val != 0 || val != 1)
-            std::cout << "Please enter a value 0 or 1" << std::endl;
+        if (val != 0 && val != 1 && val != -1)
+            std::cout << "Please enter a value 0/1/-1" << std::endl;
         else
             this->matrix.at(n).at(m) = val;
-        clearScreen();
         std::cout << *this;
         std::cout << "If you want to stop editing press 0, if not enter 1" << std::endl;
         std::cin >> choice;
@@ -40,7 +38,7 @@ std::ostream& operator<<(std::ostream& os, const Matrix& rhs)
     os << std::endl;
     for (int i{0}; i < rhs.matrix.size(); ++i)
     {
-        os << std::setw(5) << "E" << i+1;
+        os << std::setw(5) << "E/V" << i+1;
         for (int j{0}; j < rhs.matrix.at(i).size(); ++j)
         {
             os << std::setw(5) << rhs.matrix.at(i).at(j);
@@ -105,16 +103,19 @@ inline AdjacencyMatrix::AdjacencyMatrix(std::vector<std::vector<short int>> matr
 }
 
 //To test
+//what():  vector::_M_range_check: __n (which is 2) >= this->size() (which is 2)
 Graph AdjacencyMatrix::toAdjacencyList()
 {
-    std::shared_ptr<AdjacencyList> adjList;
+    std::shared_ptr<AdjacencyList> adjList = nullptr;
     try
     {
         adjList = std::make_shared<AdjacencyList>();
+
         //we need to fill vector with empty lists
-        for (int i{ 0 }; i < this->vertices; ++i)
+        std::list<int> temp{};
+        size_t vertices = this->matrix.size();
+        for (int i{ 0 }; i < vertices; ++i)
         {
-            std::list<int> temp;
             adjList->push_back(temp);
         }
     }
@@ -123,6 +124,7 @@ Graph AdjacencyMatrix::toAdjacencyList()
         std::cerr << e.what() << '\n';
     }
     
+    //now it should be safe to push back data
     for (int i{ 0 }; i < this->matrix.size(); ++i)
     {
         for(int j{ 0 }; j < this->matrix.at(i).size(); ++i)
@@ -160,8 +162,7 @@ AdjacencyMatrix MatrixOfIncidence::toAdjacencyMatrix()
 //TO test
 //I think we need to convert matrix of incidence to adjacency matrix and then convert
 //to the adjacency list
-Graph MatrixOfIncidence::toAdjacencyList()
+inline Graph MatrixOfIncidence::toAdjacencyList()
 {
-    AdjacencyMatrix matrix = this->toAdjacencyMatrix();
-    return matrix.toAdjacencyList();
+    return this->toAdjacencyMatrix().toAdjacencyList();
 }

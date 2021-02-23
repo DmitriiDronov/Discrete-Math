@@ -45,16 +45,14 @@ Graph::Graph(int vertices) :
     
 }
 
-Graph::Graph(AdjacencyMatrix matrix)
+inline Graph::Graph(AdjacencyMatrix matrix)
 {
     *this = matrix.toAdjacencyList();
 }
 
-inline Graph::Graph(std::shared_ptr<AdjacencyList> adjListPtr, int vertices) :
+Graph::Graph(std::shared_ptr<AdjacencyList> adjListPtr, int vertices) :
     numVertices(vertices), adjList(adjListPtr) 
-{
-    return;
-}
+{}
 
 std::ostream& operator<<(std::ostream &os, const Graph &rhs)
 {

@@ -14,18 +14,6 @@ protected:
     std::vector<std::vector<short int>> matrix;
 };
 
-class MatrixOfIncidence : public Matrix
-{
-private:
-    //row and columns
-    int peaks, edges;
-public:
-    MatrixOfIncidence(int numOfPeaks, int numOfEdges);
-    //void edit(void) override;
-    Graph toAdjacencyList() override;
-    AdjacencyMatrix toAdjacencyMatrix();
-};
-
 class AdjacencyMatrix : public Matrix
 {
 private:
@@ -33,8 +21,18 @@ private:
 public:
     AdjacencyMatrix(int numOfVertices);
     AdjacencyMatrix(std::vector<std::vector<short int>> matrix);
-    //void edit(void) override;
     Graph toAdjacencyList() override;
+};
+
+class MatrixOfIncidence : public Matrix
+{
+private:
+    //row and columns
+    int peaks, edges;
+public:
+    MatrixOfIncidence(int numOfPeaks, int numOfEdges);
+    Graph toAdjacencyList() override;
+    AdjacencyMatrix toAdjacencyMatrix();
 };
 
 #endif
