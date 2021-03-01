@@ -1,14 +1,26 @@
 #ifndef MATRIX_HPP_H
 #define MATRIX_HPP_H
 #include "Graph.hpp"
+
+// TODO: think about toAdjacencyList method.
+// should it be only in AdjacencyMatrix?s
+
 class Graph;
 
-//this is abstract interface class
+// base abstract class
+// provides some common functionality for derived classes
 class Matrix
 {
 public:
+    // edits a matrix
     virtual void edit();
+    // transforms 'Matrix' object
+    // to the 'Graph' object
     virtual Graph toAdjacencyList() = 0;
+    // prints the 'Matrix' object to Standart Output(stdout)
+    //
+    // How to use example:
+    // std::cout << Matrix object;
     friend std::ostream& operator<<(std::ostream &os, const Matrix &rhs);
 protected:
     std::vector<std::vector<short int>> matrix;
@@ -16,23 +28,32 @@ protected:
 
 class AdjacencyMatrix : public Matrix
 {
-private:
-    int vertices;
 public:
     AdjacencyMatrix(int numOfVertices);
+    // Constructs 'AdjacencyMatrix' object
+    // from the vector
     AdjacencyMatrix(std::vector<std::vector<short int>> matrix);
+    // transforms 'AdjacencyMatrix' object
+    //to the 'Graph' object
     Graph toAdjacencyList() override;
+private:
+    int vertices;
 };
 
 class MatrixOfIncidence : public Matrix
 {
-private:
-    //row and columns
-    int peaks, edges;
 public:
     MatrixOfIncidence(int numOfPeaks, int numOfEdges);
+    // transforms 'AdjacencyMatrix' object
+    //to the 'Graph' object
     Graph toAdjacencyList() override;
+    // transforms 'MatrixOfIncidence' object
+    // to the 'AdjacencyMatrix'
+    // it is used in toAdjacencyList() method
     AdjacencyMatrix toAdjacencyMatrix();
+private:
+    // row and columns
+    int peaks, edges;
 };
 
 #endif

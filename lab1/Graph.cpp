@@ -15,7 +15,7 @@ Graph::Graph(int vertices) :
     try
     {
         this->adjList = std::make_shared<std::vector<std::list<int>>>();
-        //number of verices to input
+        // number of verices to input
         unsigned int numOfInputs{ 0 };
         // the vertice to input
         unsigned int vertice{ 0 };
@@ -67,13 +67,17 @@ std::ostream& operator<<(std::ostream &os, const Graph &rhs)
     return os;
 }
 
-//TODO
+// TODO: Implement a 'Graph' method which
+// transforms 'Graph' object to the 
+// 'MatrixOfIncidence' object
 MatrixOfIncidence Graph::toMatrixOfIncidence()
 {
     return MatrixOfIncidence(0, 0);
 }
 
-//TODO
+// TODO: Implement a 'Graph' method which
+// transforms 'Graph' object to the 
+// 'AdjacencyMatrix' object
 AdjacencyMatrix Graph::toAdjacencyMatrix()
 {
     return AdjacencyMatrix(0);
