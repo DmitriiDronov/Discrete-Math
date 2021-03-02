@@ -10,7 +10,7 @@
 // automatically push_back *this
 // to the static vector of graphs 
 
-typedef std::vector<std::list<int>> AdjacencyList;
+typedef std::vector<std::list<unsigned int>> AdjacencyList;
 
 // Contains Adjacency List and its number of vertices
 // Used for storing Graphs (even if the Graph is declared
@@ -18,14 +18,14 @@ typedef std::vector<std::list<int>> AdjacencyList;
 class Graph
 {
 public:
-    Graph(int vertices);
+    Graph(size_t vertices);
     // to test
     // Constructs a 'Graph' object, 
     // expecting a pointer to the 'AdjacencyList'
     // and the number of vertices
     Graph(std::shared_ptr<AdjacencyList> adjListPtr, int vertices);
     // to test
-    // Constructs a 'Graph' object from 'AdjacencyMatrix' object,
+    // Constructs a 'Graph' object from 'AdjacencyMatrix' object
     Graph(AdjacencyMatrix matrix);
     void addEdge(int src, int dest);
     // prints the vector of lists(Adjacancy list) in the 
@@ -41,7 +41,7 @@ public:
     // Graph object isn't deleted
     AdjacencyMatrix toAdjacencyMatrix();
 private:
-    int numVertices;
+    size_t numVertices;
     std::shared_ptr<AdjacencyList> adjList;
 };
 

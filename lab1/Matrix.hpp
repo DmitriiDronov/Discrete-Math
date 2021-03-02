@@ -3,7 +3,7 @@
 #include "Graph.hpp"
 
 // TODO: think about toAdjacencyList method.
-// should it be only in AdjacencyMatrix?s
+// should it be only in AdjacencyMatrix?
 
 class Graph;
 
@@ -37,7 +37,7 @@ public:
     //to the 'Graph' object
     Graph toAdjacencyList() override;
 private:
-    int vertices;
+    size_t vertices;
 };
 
 class MatrixOfIncidence : public Matrix
@@ -45,7 +45,7 @@ class MatrixOfIncidence : public Matrix
 public:
     MatrixOfIncidence(int numOfPeaks, int numOfEdges);
     // transforms 'AdjacencyMatrix' object
-    //to the 'Graph' object
+    // to the 'Graph' object
     Graph toAdjacencyList() override;
     // transforms 'MatrixOfIncidence' object
     // to the 'AdjacencyMatrix'
@@ -53,7 +53,7 @@ public:
     AdjacencyMatrix toAdjacencyMatrix();
 private:
     // row and columns
-    int peaks, edges;
+    size_t peaks, edges;
 };
 
 #endif

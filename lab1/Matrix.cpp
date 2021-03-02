@@ -8,10 +8,10 @@ void Matrix::edit()
 {
     int choice{ 0 };
     unsigned int n{ 0 }, m{ 0 };
-    unsigned int val{ 0 };
+    int val{ 0 };
     do
     {
-        clearScreen();
+        //clearScreen();
         std::cout << *this;
         std::cout << "Enter element position to edit [r][c] separated by space: ";
         std::cin >> n >> m;
@@ -32,14 +32,14 @@ void Matrix::edit()
 std::ostream& operator<<(std::ostream& os, const Matrix& rhs)
 {
     os << std::setw(5) << " ";
-    for (int i{1}; i <= rhs.matrix.size(); ++i)
+    for (unsigned int i{1}; i <= rhs.matrix.size(); ++i)
         os << std::setw(5) << "V" << i;
 
     os << std::endl;
-    for (int i{0}; i < rhs.matrix.size(); ++i)
+    for (unsigned int i{0}; i < rhs.matrix.size(); ++i)
     {
         os << std::setw(5) << "E/V" << i+1;
-        for (int j{0}; j < rhs.matrix.at(i).size(); ++j)
+        for (unsigned int j{0}; j < rhs.matrix.at(i).size(); ++j)
         {
             os << std::setw(5) << rhs.matrix.at(i).at(j);
         }
@@ -53,10 +53,10 @@ MatrixOfIncidence::MatrixOfIncidence(int numOfPeaks, int numOfEdges) :
 {
     clearScreen();
     short int num{0};
-    for (int i{0}; i < peaks; ++i)
+    for (unsigned int i{0}; i < peaks; ++i)
     {
         std::vector<short int> vec;
-        for (int j{0}; j < edges; ++j)
+        for (unsigned int j{0}; j < edges; ++j)
         {
             do
             {
@@ -102,8 +102,8 @@ inline AdjacencyMatrix::AdjacencyMatrix(std::vector<std::vector<short int>> matr
     this->matrix = matrix;
 }
 
-//To test
-//what():  vector::_M_range_check: __n (which is 2) >= this->size() (which is 2)
+// To test
+// what():  vector::_M_range_check: __n (which is 2) >= this->size() (which is 2)
 Graph AdjacencyMatrix::toAdjacencyList()
 {
     std::shared_ptr<AdjacencyList> adjList = nullptr;
@@ -111,10 +111,11 @@ Graph AdjacencyMatrix::toAdjacencyList()
     {
         adjList = std::make_shared<AdjacencyList>();
 
-        //we need to fill vector with empty lists
-        std::list<int> temp{};
+        // we need to fill vector with empty lists
+        // so it can be iterable and safe to push data
+        std::list<unsigned int> temp{};
         size_t vertices = this->matrix.size();
-        for (int i{ 0 }; i < vertices; ++i)
+        for (unsigned int i{ 0 }; i < vertices; ++i)
         {
             adjList->push_back(temp);
         }
@@ -125,9 +126,9 @@ Graph AdjacencyMatrix::toAdjacencyList()
     }
     
     //now it should be safe to push back data
-    for (int i{ 0 }; i < this->matrix.size(); ++i)
+    for (unsigned int i{ 0 }; i < this->matrix.size(); ++i)
     {
-        for(int j{ 0 }; j < this->matrix.at(i).size(); ++i)
+        for(unsigned int j{ 0 }; j < this->matrix.at(i).size(); ++i)
         {
             if (this->matrix.at(i).at(j) == 1)
                 adjList->at(i).push_back(j);
@@ -143,7 +144,7 @@ AdjacencyMatrix MatrixOfIncidence::toAdjacencyMatrix()
     std::vector<std::vector<short int>> adjacency;
     int vertices = this->peaks;
 
-    for (int edge = 0; edge < this->edges; ++edge)
+    for (unsigned int edge = 0; edge < this->edges; ++edge)
     {
         int a = -1, b = -1, vertex = 0;
         for (; vertex < vertices && a == -1; ++vertex) 
@@ -159,9 +160,9 @@ AdjacencyMatrix MatrixOfIncidence::toAdjacencyMatrix()
     return AdjacencyMatrix(adjacency);
 }
 
-//TO test
-//I think we need to convert matrix of incidence to adjacency matrix and then convert
-//to the adjacency list
+// TO test
+// I think we need to convert matrix of incidence to adjacency matrix and then convert
+// to the adjacency list
 inline Graph MatrixOfIncidence::toAdjacencyList()
 {
     return this->toAdjacencyMatrix().toAdjacencyList();
