@@ -32,14 +32,14 @@ void Matrix::edit()
 std::ostream& operator<<(std::ostream& os, const Matrix& rhs)
 {
     os << std::setw(5) << " ";
-    for (unsigned int i{1}; i <= rhs.matrix.size(); ++i)
+    for (unsigned int i{ 0 }; i <= rhs.matrix.size() - 1; ++i)
         os << std::setw(5) << "V" << i;
 
     os << std::endl;
-    for (unsigned int i{0}; i < rhs.matrix.size(); ++i)
+    for (unsigned int i{ 0 }; i < rhs.matrix.size(); ++i)
     {
-        os << std::setw(5) << "E/V" << i+1;
-        for (unsigned int j{0}; j < rhs.matrix.at(i).size(); ++j)
+        os << std::setw(5) << "E/V" << i;
+        for (unsigned int j{ 0 }; j < rhs.matrix.at(i).size(); ++j)
         {
             os << std::setw(5) << rhs.matrix.at(i).at(j);
         }
@@ -102,33 +102,31 @@ inline AdjacencyMatrix::AdjacencyMatrix(std::vector<std::vector<short int>> matr
     this->matrix = matrix;
 }
 
-// To test
-// what():  vector::_M_range_check: __n (which is 2) >= this->size() (which is 2)
 Graph AdjacencyMatrix::toAdjacencyList()
 {
-    std::shared_ptr<AdjacencyList> adjList = nullptr;
+    std::shared_ptr<AdjacencyList> adjList{ nullptr };
+    size_t vertices = this->matrix.size();
     try
     {
         adjList = std::make_shared<AdjacencyList>();
-
         // we need to fill vector with empty lists
         // so it can be iterable and safe to push data
-        std::list<unsigned int> temp{};
-        size_t vertices = this->matrix.size();
         for (unsigned int i{ 0 }; i < vertices; ++i)
         {
+            std::list<unsigned int> temp{};
             adjList->push_back(temp);
         }
     }
     catch(const std::exception& e)
     {
         std::cerr << e.what() << '\n';
+        std::cerr << "Unable to fill an empty adjacency list\n";
     }
     
     //now it should be safe to push back data
-    for (unsigned int i{ 0 }; i < this->matrix.size(); ++i)
+    for (unsigned int i{ 0 }; i < vertices; ++i)
     {
-        for(unsigned int j{ 0 }; j < this->matrix.at(i).size(); ++i)
+        for(unsigned int j{ 0 }; j < this->matrix.at(i).size(); ++j)
         {
             if (this->matrix.at(i).at(j) == 1)
                 adjList->at(i).push_back(j);
@@ -146,13 +144,20 @@ AdjacencyMatrix MatrixOfIncidence::toAdjacencyMatrix()
 
     for (unsigned int edge = 0; edge < this->edges; ++edge)
     {
+        std::cout << "Inside loop\n";
         int a = -1, b = -1, vertex = 0;
         for (; vertex < vertices && a == -1; ++vertex) 
+        {
+            std::cout << "Inside first inner loop\n";
             if (this->matrix.at(edge).at(vertex)) 
                 a = vertex;
+        }
         for (; vertex < vertices && b == -1; ++vertex) 
-            if (this->matrix.at(edge).at(vertex)) 
+        {
+            std::cout << "Inside second inner loop\n";
+             if (this->matrix.at(edge).at(vertex)) 
                 b = vertex;
+        }
         if (b == -1)   
             b = a;
         adjacency.at(a).at(b) = adjacency.at(b).at(a) = 1;

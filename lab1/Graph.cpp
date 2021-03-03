@@ -36,7 +36,6 @@ Graph::Graph(size_t vertices) :
             }
         this->adjList->push_back(list);
         }
-        Graphs().push_back(*this);
     }
     catch(const std::exception& e)
     {
@@ -49,14 +48,11 @@ Graph::Graph(size_t vertices) :
 Graph::Graph(AdjacencyMatrix matrix)
 {
     *this = matrix.toAdjacencyList();
-    Graphs().push_back(*this);
 }
 
 Graph::Graph(std::shared_ptr<AdjacencyList> adjListPtr, int vertices) :
     numVertices(vertices), adjList(adjListPtr) 
-{
-    Graphs().push_back(*this);
-}
+{ }
 
 std::ostream& operator<<(std::ostream &os, const Graph &rhs)
 {
@@ -80,11 +76,6 @@ MatrixOfIncidence Graph::toMatrixOfIncidence()
     return MatrixOfIncidence(0, 0);
 }
 
-// TODO: Implement a 'Graph' method which
-// transforms 'Graph' object to the 
-// 'AdjacencyMatrix' object
-// https://www.geeksforgeeks.org/convert-adjacency-list-to-adjacency-matrix-representation-of-a-graph/
-// TO TEST
 AdjacencyMatrix Graph::toAdjacencyMatrix()
 {
     size_t vertices = this->numVertices;
@@ -108,7 +99,6 @@ AdjacencyMatrix Graph::toAdjacencyMatrix()
             for (auto el : this->adjList->at(i))
             {
                 el -= 1;
-                std::cout << "[" << i << "]" << "[" << el << "]";
                 matrix.at(i).at(el) = 1;
             }
             std::cout << std::endl;

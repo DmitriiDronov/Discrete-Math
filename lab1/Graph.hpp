@@ -6,10 +6,6 @@
 #include <iostream>
 #include "Matrix.hpp"
 
-// TODO: every Graph constructor should 
-// automatically push_back *this
-// to the static vector of graphs 
-
 typedef std::vector<std::list<unsigned int>> AdjacencyList;
 
 // Contains Adjacency List and its number of vertices
