@@ -4,7 +4,6 @@
 #include <vector>
 #include "Graph.hpp"
 
-//for optimization here inline. We define it in the header file because of linker error.
 inline void PrintMenu()
 {
     std::cout << 

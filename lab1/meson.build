@@ -1,4 +1,4 @@
-project('lab1', 'cpp', version : 'Development')
+project('lab1', 'cpp', version : 'Testing')
 
 executable('main', 
           'main.cpp',

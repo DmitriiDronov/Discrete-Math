@@ -44,17 +44,20 @@ Graph::Graph(size_t vertices) :
         std::cerr << "Unable to create a graph\n";
         abort();
     }
-    char choice{};
-    do
+    if (numVertices > 0)
     {
-        clearScreen();
-        std::cout << *this;
-        std::cout << "Do you want to edit(Y/n): ";
-        std::cin >> choice;
-        choice = toupper(choice);
-        if (choice == 'Y')
-            this->edit();
-    } while (choice == 'Y');
+        char choice{};
+        do
+        {
+            clearScreen();
+            std::cout << *this;
+            std::cout << "Do you want to edit(Y/n): ";
+            std::cin >> choice;
+            choice = toupper(choice);
+            if (choice == 'Y')
+                this->edit();
+        } while (choice == 'Y');
+    }
 }
 
 Graph::Graph(AdjacencyMatrix matrix)
@@ -103,12 +106,19 @@ void Graph::edit()
     }
 }
 
-// TODO: Implement a 'Graph' method which
-// transforms 'Graph' object to the 
-// 'MatrixOfIncidence' object
-// https://stackoverflow.com/questions/22380139/how-do-you-transform-adjacency-matrices-to-incidence-matrices-and-vice-versa
 MatrixOfIncidence Graph::toMatrixOfIncidence()
 {
+    try
+    {
+        AdjacencyMatrix adjMx = this->toAdjacencyMatrix();
+        return adjMx.toMatrixOfIncidence();
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        std::cerr << "Unable to convert adjacency list to" 
+                  << "Matrix of Incidence" << std::endl;
+    }
     return MatrixOfIncidence(0, 0);
 }
 

@@ -2,10 +2,8 @@
 #define MATRIX_HPP_H
 #include "Graph.hpp"
 
-// TODO: think about toAdjacencyList method.
-// should it be only in AdjacencyMatrix?
-
 class Graph;
+class MatrixOfIncidence;
 
 // base abstract class
 // provides some common functionality for derived classes
@@ -37,6 +35,7 @@ public:
     // transforms 'AdjacencyMatrix' object
     //to the 'Graph' object
     Graph toAdjacencyList() override;
+    MatrixOfIncidence toMatrixOfIncidence();
 private:
     size_t vertices;
 };
@@ -45,6 +44,7 @@ class MatrixOfIncidence : public Matrix
 {
 public:
     MatrixOfIncidence(int numOfPeaks, int numOfEdges);
+    MatrixOfIncidence(std::vector<std::vector<short int>> mx);
     // transforms 'AdjacencyMatrix' object
     // to the 'Graph' object
     Graph toAdjacencyList() override;

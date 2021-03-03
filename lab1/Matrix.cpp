@@ -69,17 +69,26 @@ MatrixOfIncidence::MatrixOfIncidence(int numOfPeaks, int numOfEdges) :
         }
         matrix.push_back(vec);
     }
-    char choice{};
-    do
+    if (peaks > 0)
     {
-        clearScreen();
-        std::cout << *this;
-        std::cout << "Do you want to edit(Y/n): ";
-        std::cin >> choice;
-        choice = toupper(choice);
-        if (choice == 'Y')
-            this->edit();
-    } while (choice == 'Y');
+        char choice{};
+        do
+        {
+            clearScreen();
+            std::cout << *this;
+            std::cout << "Do you want to edit(Y/n): ";
+            std::cin >> choice;
+            choice = toupper(choice);
+            if (choice == 'Y')
+                this->edit();
+        } while (choice == 'Y');
+    }
+}
+
+MatrixOfIncidence::MatrixOfIncidence(std::vector<std::vector<short int>> mx) :
+    peaks(mx.size()), edges(mx.at(0).size())
+{
+    matrix = mx;
 }
 
 AdjacencyMatrix::AdjacencyMatrix(int numOfVertices) :
@@ -104,17 +113,20 @@ AdjacencyMatrix::AdjacencyMatrix(int numOfVertices) :
         }
         matrix.push_back(vec);
     }
-    char choice{};
-    do
+    if (vertices > 0)
     {
-        clearScreen();
-        std::cout << *this;
-        std::cout << "Do you want to edit(Y/n): ";
-        std::cin >> choice;
-        choice = toupper(choice);
-        if (choice == 'Y')
-            this->edit();
-    } while (choice == 'Y');
+        char choice{};
+        do
+        {
+            clearScreen();
+            std::cout << *this;
+            std::cout << "Do you want to edit(Y/n): ";
+            std::cin >> choice;
+            choice = toupper(choice);
+            if (choice == 'Y')
+                this->edit();
+        } while (choice == 'Y');
+    }
 }
 
 inline AdjacencyMatrix::AdjacencyMatrix(std::vector<std::vector<short int>> matrix) :
@@ -143,53 +155,98 @@ Graph AdjacencyMatrix::toAdjacencyList()
         std::cerr << e.what() << '\n';
         std::cerr << "Unable to fill an empty adjacency list\n";
     }
-    
-    //now it should be safe to push back data
-    for (unsigned int i{ 0 }; i < vertices; ++i)
+
+    try
     {
-        for(unsigned int j{ 0 }; j < this->matrix.at(i).size(); ++j)
+        for (unsigned int i{0}; i < vertices; ++i)
         {
-            if (this->matrix.at(i).at(j) == 1)
-                adjList->at(i).push_back(j);
+            for (unsigned int j{0}; j < this->matrix.at(i).size(); ++j)
+            {
+                if (this->matrix.at(i).at(j) == 1)
+                    adjList->at(i).push_back(j);
+            }
         }
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << e.what() << '\n';
+        std::cerr << "Unable to convert adjacency matrix to adjacency list\n";
     }
     return Graph(adjList, this->vertices);
 }
 
-//to test 
-//https://stackoverflow.com/questions/22380139/how-do-you-transform-adjacency-matrices-to-incidence-matrices-and-vice-versa
-// what():  vector::_M_range_check: __n (which is 2) >= this->size() (which is 0)
+MatrixOfIncidence AdjacencyMatrix::toMatrixOfIncidence()
+{
+    std::vector<std::vector<short int>> inc{};
+    int cols = this->matrix.size();
+    int edge = 0;
+    try
+    {
+        for (int col{ 0 }; col < cols; ++col)
+        {
+            for (int row{ 0 }; row <= col; ++row)
+            {
+                if (this->matrix.at(col).at(row))
+                {
+                    inc.push_back(std::vector<short int>(cols, 0));
+                    inc.at(edge).at(row) = inc.at(edge).at(col) = 1;
+                    ++edge;
+                }
+            }
+        }
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        std::cerr << "Invalid matrix\n";
+    }
+    return MatrixOfIncidence(inc);
+}
+
 AdjacencyMatrix MatrixOfIncidence::toAdjacencyMatrix()
 {
+    // we need to fill this vector with 0,
+    // so we can safely work with it
     std::vector<std::vector<short int>> adjacency;
     int vertices = this->peaks;
-
-    for (unsigned int edge = 0; edge < this->edges; ++edge)
+    for (unsigned int i{ 0 }; i < this->peaks; ++i)
     {
-        std::cout << "Inside loop\n";
-        int a = -1, b = -1;
-        for (int vertex{ 0 }; vertex < vertices && a == -1; ++vertex) 
+        std::vector<short int> temp{};
+        for (unsigned int j{ 0 }; j < this->edges; ++j)
         {
-            std::cout << "Inside first inner loop\n";
-            if (this->matrix.at(edge).at(vertex)) 
-                a = vertex;
+            temp.push_back(0);
         }
-        for (int vertex{ 0 }; vertex < vertices && b == -1; ++vertex) 
+        adjacency.push_back(temp);
+    }
+
+    try
+    {
+        for (unsigned int edge = 0; edge < this->edges; ++edge)
         {
-            std::cout << "Inside second inner loop\n";
-             if (this->matrix.at(edge).at(vertex)) 
-                b = vertex;
+            int a{-1}, b{-1}, vertex{0};
+            for (; vertex < vertices && a == -1; ++vertex)
+            {
+                if (this->matrix.at(edge).at(vertex))
+                    a = vertex;
+            }
+            for (; vertex < vertices && b == -1; ++vertex)
+            {
+                if (this->matrix.at(edge).at(vertex))
+                    b = vertex;
+            }
+            if (b == -1)
+                b = a;
+            adjacency.at(a).at(b) = adjacency.at(b).at(a) = 1;
         }
-        if (b == -1)   
-            b = a;
-        adjacency.at(a).at(b) = adjacency.at(b).at(a) = 1;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+        std::cerr << "Invalid matrix\n";
     }
     return AdjacencyMatrix(adjacency);
 }
 
-// TO test
-// I think we need to convert matrix of incidence to adjacency matrix and then convert
-// to the adjacency list
 inline Graph MatrixOfIncidence::toAdjacencyList()
 {
     return this->toAdjacencyMatrix().toAdjacencyList();
