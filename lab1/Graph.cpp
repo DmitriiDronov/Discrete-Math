@@ -2,6 +2,7 @@
 #include <iostream>
 #include <iomanip>
 #include "menuUtils.hpp"
+#include <algorithm>
 
 std::vector<Graph>& Graphs()
 {
@@ -16,45 +17,46 @@ Graph::Graph(size_t vertices) :
     {
         this->adjList = std::make_shared<AdjacencyList>();
         // the vertice to input
-        unsigned int vertice{ 0 };
-
-        for (unsigned int i{ 0 }; i < vertices; ++i)
+        int vertice{ 0 };
+        for (unsigned int i{ 0 }; i < numVertices; ++i)
         {
             clearScreen();
             std::list<unsigned int> list;
-            for (unsigned int j{ 0 }; j < vertices; ++j)
+            std::cout << "Enter vertices to vertice " << i << std::endl;
+            std::cout << "If you want to stop, enter -1" << std::endl;
+            for (unsigned int j { 0 }; j < vertices; ++j)
             {
-                do
-                {
-                    clearScreen();
-                    std::cout << "If you want to stop entering values, input a value"
-                    << " greater then " << vertices << std::endl;
-                    std::cout << "Enter vertices correstonding to vertice " 
-                    << i << std::endl;
-                    std::cin >> vertice;
+                std::cin >> vertice;
+                if (vertice < 0)
+                    break;
+                auto findResult = std::find(std::begin(list), std::end(list), vertice);
+                // means there is no such value
+                if (findResult == std::end(list))
                     list.push_back(vertice);
-                } while (vertice >= 0 && vertice <= vertices);
             }
-            adjList->push_back(list);
+        this->adjList->push_back(list);
         }
-        
+        Graphs().push_back(*this);
     }
     catch(const std::exception& e)
     {
         std::cerr << e.what() << '\n';
+        std::cerr << "Unable to create a graph\n";
         abort();
     }
-    
 }
 
-inline Graph::Graph(AdjacencyMatrix matrix)
+Graph::Graph(AdjacencyMatrix matrix)
 {
     *this = matrix.toAdjacencyList();
+    Graphs().push_back(*this);
 }
 
-Graph::Graph(std::shared_ptr<AdjacencyList> adjListPtr, int vertices) :
+inline Graph::Graph(std::shared_ptr<AdjacencyList> adjListPtr, int vertices) :
     numVertices(vertices), adjList(adjListPtr) 
-{}
+{
+    Graphs().push_back(*this);
+}
 
 std::ostream& operator<<(std::ostream &os, const Graph &rhs)
 {
