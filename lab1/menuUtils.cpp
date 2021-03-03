@@ -15,6 +15,7 @@ void handleChoice(const int choice)
 	unsigned int nodes{ 0 };
 	unsigned int edges{ 0 };
 	unsigned int vertices{ 0 };
+	unsigned int index{ 0 };
 	switch (choice)
 	{
 	// input a graph
@@ -37,7 +38,7 @@ void handleChoice(const int choice)
 				Graphs().push_back(incMatrix.toAdjacencyList());	
 			}
 			else
-				std::cerr << "Zero matrix creation" << std::endl;
+				std::cerr << "Zero matrix can't be created" << std::endl;
 			break;
 		// input adjacency matrix
 		case 2:
@@ -49,7 +50,7 @@ void handleChoice(const int choice)
 				Graphs().push_back(adjacencyMatrix.toAdjacencyList());
 			}
 			else
-				std::cerr << "Zero matrix creation" << std::endl;
+				std::cerr << "Zero matrix can't be created" << std::endl;
 			break;
 		// input adjacency list
 		case 3:
@@ -67,28 +68,31 @@ void handleChoice(const int choice)
 			std::cout << "Invalid choice" << std::endl;
 			break;
 		}
-	// transform matrix from one to another
-	case 2:
-		break;
-		std::cout << std::endl;
 	// edit a graph
-	case 3:
+	case 2:
+		printGraphs(Graphs());
+		std::cout << "Enter a graph index you want to edit: ";
+		std::cin >> index;
+
 		break;
 		std::cout << std::endl;
 	// display data
-	case 4:
+	case 3:
 		std::cout << "1. Print lists\n2. Print Incidence Matrixes\n3. Print adjacency Matrixes\n";
 		std::cin >> innerChoice;
 		switch (innerChoice)
 		{
 		case 1:
-			// not very efficient, but we have no choice
 			for (unsigned int i{ 0 }; i < Graphs().size(); ++i)
 				std::cout << Graphs().at(i);
 			break;
 		case 2:
+			for (unsigned int i{ 0 }; i < Graphs().size(); ++i)
+				std::cout << Graphs().at(i).toMatrixOfIncidence();
 			break;
 		case 3:
+			for (unsigned int i{ 0 }; i < Graphs().size(); ++i)
+				std::cout << Graphs().at(i).toAdjacencyMatrix();
 			break;
 		default:
 			std::cout << "Invalid choice" << std::endl;
@@ -123,4 +127,13 @@ void pause()
 	std::cout << std::endl << "Press any key to continue...";
 	std::string dummy;
 	std::getline(std::cin, dummy);
+}
+
+void printGraphs(std::vector<Graph>& graphs)
+{
+    size_t size = graphs.size();
+    for (unsigned int i{ 0 }; i < size; ++i)
+    {
+        std::cout << i << "th graph" << std::endl << graphs.at(i);
+    }
 }

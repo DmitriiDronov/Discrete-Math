@@ -3,7 +3,6 @@
 #include "Graph.hpp"
 #include "Matrix.hpp"
 
-//edits a Matrix 
 void Matrix::edit()
 {
     int choice{ 0 };
@@ -11,7 +10,7 @@ void Matrix::edit()
     int val{ 0 };
     do
     {
-        //clearScreen();
+        clearScreen();
         std::cout << *this;
         std::cout << "Enter element position to edit [r][c] separated by space: ";
         std::cin >> n >> m;
@@ -70,6 +69,17 @@ MatrixOfIncidence::MatrixOfIncidence(int numOfPeaks, int numOfEdges) :
         }
         matrix.push_back(vec);
     }
+    char choice{};
+    do
+    {
+        clearScreen();
+        std::cout << *this;
+        std::cout << "Do you want to edit(Y/n): ";
+        std::cin >> choice;
+        choice = toupper(choice);
+        if (choice == 'Y')
+            this->edit();
+    } while (choice == 'Y');
 }
 
 AdjacencyMatrix::AdjacencyMatrix(int numOfVertices) :
@@ -94,6 +104,17 @@ AdjacencyMatrix::AdjacencyMatrix(int numOfVertices) :
         }
         matrix.push_back(vec);
     }
+    char choice{};
+    do
+    {
+        clearScreen();
+        std::cout << *this;
+        std::cout << "Do you want to edit(Y/n): ";
+        std::cin >> choice;
+        choice = toupper(choice);
+        if (choice == 'Y')
+            this->edit();
+    } while (choice == 'Y');
 }
 
 inline AdjacencyMatrix::AdjacencyMatrix(std::vector<std::vector<short int>> matrix) :
@@ -137,6 +158,7 @@ Graph AdjacencyMatrix::toAdjacencyList()
 
 //to test 
 //https://stackoverflow.com/questions/22380139/how-do-you-transform-adjacency-matrices-to-incidence-matrices-and-vice-versa
+// what():  vector::_M_range_check: __n (which is 2) >= this->size() (which is 0)
 AdjacencyMatrix MatrixOfIncidence::toAdjacencyMatrix()
 {
     std::vector<std::vector<short int>> adjacency;
@@ -145,14 +167,14 @@ AdjacencyMatrix MatrixOfIncidence::toAdjacencyMatrix()
     for (unsigned int edge = 0; edge < this->edges; ++edge)
     {
         std::cout << "Inside loop\n";
-        int a = -1, b = -1, vertex = 0;
-        for (; vertex < vertices && a == -1; ++vertex) 
+        int a = -1, b = -1;
+        for (int vertex{ 0 }; vertex < vertices && a == -1; ++vertex) 
         {
             std::cout << "Inside first inner loop\n";
             if (this->matrix.at(edge).at(vertex)) 
                 a = vertex;
         }
-        for (; vertex < vertices && b == -1; ++vertex) 
+        for (int vertex{ 0 }; vertex < vertices && b == -1; ++vertex) 
         {
             std::cout << "Inside second inner loop\n";
              if (this->matrix.at(edge).at(vertex)) 

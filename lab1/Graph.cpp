@@ -17,17 +17,18 @@ Graph::Graph(size_t vertices) :
     {
         this->adjList = std::make_shared<AdjacencyList>();
         // the vertice to input
-        int vertice{ 0 };
+        unsigned int vertice{ 0 };
         for (unsigned int i{ 0 }; i < numVertices; ++i)
         {
             clearScreen();
             std::list<unsigned int> list;
             std::cout << "Enter vertices to vertice " << i << std::endl;
-            std::cout << "If you want to stop, enter -1" << std::endl;
+            std::cout << "If you want to stop, enter a nubmer higher than " 
+                      << vertices << std::endl;
             for (unsigned int j { 0 }; j < vertices; ++j)
             {
                 std::cin >> vertice;
-                if (vertice < 0)
+                if (vertice < 0 || vertice > vertices)
                     break;
                 auto findResult = std::find(std::begin(list), std::end(list), vertice);
                 // means there is no such value
@@ -43,6 +44,17 @@ Graph::Graph(size_t vertices) :
         std::cerr << "Unable to create a graph\n";
         abort();
     }
+    char choice{};
+    do
+    {
+        clearScreen();
+        std::cout << *this;
+        std::cout << "Do you want to edit(Y/n): ";
+        std::cin >> choice;
+        choice = toupper(choice);
+        if (choice == 'Y')
+            this->edit();
+    } while (choice == 'Y');
 }
 
 Graph::Graph(AdjacencyMatrix matrix)
@@ -65,6 +77,30 @@ std::ostream& operator<<(std::ostream &os, const Graph &rhs)
     }
     os << std::endl;
     return os;
+}
+
+void Graph::edit()
+{
+    clearScreen();
+    std::cout << *this;
+    std::cout << "Enter an index of vertice you want to edit: ";
+    unsigned int index{ 0 };
+    std::cin >> index;
+
+    if (index > this->adjList->size())
+        std::cerr << "Index is too big\n";
+    else 
+    {
+        std::cout << "Enter new values: ";
+        unsigned int vertice{ 0 };
+        std::list<unsigned int> list;
+        for (unsigned int i{ 0 }; i < this->adjList->at(index).size(); ++i)
+        {
+            std::cin >> vertice;
+            list.push_back(vertice);
+        }
+        this->adjList->at(index) = list;
+    }
 }
 
 // TODO: Implement a 'Graph' method which

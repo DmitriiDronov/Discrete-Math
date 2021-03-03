@@ -36,6 +36,7 @@ public:
     // transforms Graph object to the Adjacency Matrix object
     // Graph object isn't deleted
     AdjacencyMatrix toAdjacencyMatrix();
+    void edit();
 private:
     size_t numVertices;
     std::shared_ptr<AdjacencyList> adjList;
@@ -44,5 +45,4 @@ private:
 // Returns a refenece to the static vector of 'Graph' objects
 // serves like a chest
 std::vector<Graph>& Graphs();
-
 #endif
