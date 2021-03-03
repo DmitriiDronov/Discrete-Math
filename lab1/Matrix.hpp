@@ -12,6 +12,7 @@ class Graph;
 class Matrix
 {
 public:
+    virtual ~Matrix() {};
     // edits a matrix
     virtual void edit();
     // transforms 'Matrix' object
