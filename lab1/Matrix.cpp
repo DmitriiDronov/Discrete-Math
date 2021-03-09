@@ -129,12 +129,42 @@ AdjacencyMatrix::AdjacencyMatrix(int numOfVertices) :
     }
 }
 
-inline AdjacencyMatrix::AdjacencyMatrix(std::vector<std::vector<short int>> matrix) :
+AdjacencyMatrix::AdjacencyMatrix(std::vector<std::vector<short int>> matrix) :
     Matrix(), vertices(matrix.at(0).size())
 {
     this->matrix = matrix;
 }
 
+bool AdjacencyMatrix::isDirected()
+{
+    // set empty vetor
+    std::vector<std::vector<short int>> sliceOfMatrix(vertices*2, std::vector<short int>(vertices, 0));
+    int elementsCounter = 0;
+    int checkCounter = 0;
+    // Top triangle of the matrix
+    for (int i = 0; i < vertices; i++)
+    {
+        for (int j = i+1; j < vertices; j++)
+        {
+            sliceOfMatrix.at(elementsCounter++) = this->matrix.at(i * vertices + j);
+        }
+    }
+    // Bottom triangle of the matrix
+    for (int i = 0; i < vertices; i++)
+    {
+        for (int j = 0; j < i; j++)
+        {
+            if (checkCounter <= elementsCounter &&
+                sliceOfMatrix.at(checkCounter++) != this->matrix.at(i * vertices + j))
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+// Tested, works fine
 Graph AdjacencyMatrix::toAdjacencyList()
 {
     std::shared_ptr<AdjacencyList> adjList{ nullptr };
@@ -178,7 +208,15 @@ Graph AdjacencyMatrix::toAdjacencyList()
 MatrixOfIncidence AdjacencyMatrix::toMatrixOfIncidence()
 {
     std::vector<std::vector<short int>> inc{};
+
     int cols = this->matrix.size();
+    if (!(cols > 0))
+        return MatrixOfIncidence(0, 0);
+
+    int rows = this->matrix.at(0).size();
+    if (!(rows > 0))
+        return MatrixOfIncidence(0, 0);
+
     int edge = 0;
     try
     {

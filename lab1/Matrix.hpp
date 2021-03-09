@@ -38,6 +38,7 @@ public:
     MatrixOfIncidence toMatrixOfIncidence();
 private:
     size_t vertices;
+    bool isDirected();
 };
 
 class MatrixOfIncidence : public Matrix

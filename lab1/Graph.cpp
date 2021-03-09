@@ -24,11 +24,11 @@ Graph::Graph(size_t vertices) :
             std::list<unsigned int> list;
             std::cout << "Enter vertices to vertice " << i << std::endl;
             std::cout << "If you want to stop, enter a nubmer higher than " 
-                      << vertices << std::endl;
+                      << vertices - 1 << std::endl;
             for (unsigned int j { 0 }; j < vertices; ++j)
             {
                 std::cin >> vertice;
-                if (vertice < 0 || vertice > vertices)
+                if (vertice < 0 || vertice > vertices - 1)
                     break;
                 auto findResult = std::find(std::begin(list), std::end(list), vertice);
                 // means there is no such value
@@ -122,6 +122,7 @@ MatrixOfIncidence Graph::toMatrixOfIncidence()
     return MatrixOfIncidence(0, 0);
 }
 
+// TESTED works fine
 AdjacencyMatrix Graph::toAdjacencyMatrix()
 {
     size_t vertices = this->numVertices;
@@ -142,12 +143,10 @@ AdjacencyMatrix Graph::toAdjacencyMatrix()
     {
         for (unsigned int i{0}; i < vertices; ++i)
         {
-            for (auto el : this->adjList->at(i))
+            for (auto j : this->adjList->at(i))
             {
-                el -= 1;
-                matrix.at(i).at(el) = 1;
+                matrix[i][j] = 1;
             }
-            std::cout << std::endl;
         }
     }
     catch(const std::exception& e)
@@ -156,7 +155,5 @@ AdjacencyMatrix Graph::toAdjacencyMatrix()
         std::cerr << "Unable to convert Adjacency list to the" 
         << "Adjacency Matrix" << std::endl;
     }
-    
-    
     return AdjacencyMatrix(matrix);
 }

@@ -8,8 +8,7 @@ inline void PrintMenu()
 {
     std::cout << 
     "1. Input a graph" << std::endl <<
-    "2. Edit graph" << std::endl <<
-    "3. Display data" << std::endl << 
+    "2. Display data" << std::endl <<
     "0. Exit" << std::endl;
 }
 void handleChoice(const int choice);

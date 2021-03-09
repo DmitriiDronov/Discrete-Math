@@ -15,7 +15,6 @@ void handleChoice(const int choice)
 	unsigned int nodes{ 0 };
 	unsigned int edges{ 0 };
 	unsigned int vertices{ 0 };
-	unsigned int index{ 0 };
 	switch (choice)
 	{
 	// input a graph
@@ -69,45 +68,8 @@ void handleChoice(const int choice)
 			break;
 		}
 		break;
-	// edit a graph
-	case 2:
-		printGraphs(Graphs());
-		std::cout << "Enter a graph index you want to edit: ";
-		std::cin >> index;
-		if (index > Graphs().size())
-			break;
-		std::cout << "1.Edit via adjacency list" << std::endl
-				  << "2.Edit via adjacency matrix" << std::endl
-				  << "3.Edit via incidence matrix" << std::endl;
-		std::cin >> innerChoice;
-		switch (innerChoice)
-		{
-		case 1:
-			Graphs().at(index).edit();
-			break;
-		case 2:
-			// workaround, because isn't possible to declare vars inside switch
-			if (true)
-			{
-				AdjacencyMatrix mx = Graphs().at(index).toAdjacencyMatrix();
-				mx.edit();
-				Graphs().at(index) = mx.toAdjacencyList();
-			}
-		case 3:
-			// workaround, because isn't possible to declare vars inside switch
-			if (true)
-			{
-				MatrixOfIncidence incMx =  Graphs().at(index).toMatrixOfIncidence();
-				incMx.edit();
-				Graphs().at(index) = incMx.toAdjacencyList();
-			}
-		default:
-			break;
-		}
-		break;
-		std::cout << std::endl;
 	// display data
-	case 3:
+	case 2:
 		std::cout << "1. Print lists\n2. Print Incidence Matrixes\n3. Print adjacency Matrixes\n";
 		std::cin >> innerChoice;
 		switch (innerChoice)
