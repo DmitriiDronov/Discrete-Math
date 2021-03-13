@@ -135,35 +135,6 @@ AdjacencyMatrix::AdjacencyMatrix(std::vector<std::vector<short int>> matrix) :
     this->matrix = matrix;
 }
 
-bool AdjacencyMatrix::isDirected()
-{
-    // set empty vetor
-    std::vector<std::vector<short int>> sliceOfMatrix(vertices*2, std::vector<short int>(vertices, 0));
-    int elementsCounter = 0;
-    int checkCounter = 0;
-    // Top triangle of the matrix
-    for (int i = 0; i < vertices; i++)
-    {
-        for (int j = i+1; j < vertices; j++)
-        {
-            sliceOfMatrix.at(elementsCounter++) = this->matrix.at(i * vertices + j);
-        }
-    }
-    // Bottom triangle of the matrix
-    for (int i = 0; i < vertices; i++)
-    {
-        for (int j = 0; j < i; j++)
-        {
-            if (checkCounter <= elementsCounter &&
-                sliceOfMatrix.at(checkCounter++) != this->matrix.at(i * vertices + j))
-            {
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
 // Tested, works fine
 Graph AdjacencyMatrix::toAdjacencyList()
 {
@@ -241,46 +212,29 @@ MatrixOfIncidence AdjacencyMatrix::toMatrixOfIncidence()
     return MatrixOfIncidence(inc);
 }
 
+// tested works fine
 AdjacencyMatrix MatrixOfIncidence::toAdjacencyMatrix()
 {
-    // we need to fill this vector with 0,
-    // so we can safely work with it
-    std::vector<std::vector<short int>> adjacency;
-    int vertices = this->peaks;
-    for (unsigned int i{ 0 }; i < this->peaks; ++i)
+    size_t vxs = this->peaks;
+    // allocate vector and fill with 0
+    std::vector<std::vector<short int>> adjacency(vxs, std::vector<short int>(vxs, 0));
+    for (const auto& s: this->matrix)
     {
-        std::vector<short int> temp{};
-        for (unsigned int j{ 0 }; j < this->edges; ++j)
+        // collecting not Null values
+        std::vector<size_t> ix;
+        for (size_t i{ 0 }; i < s.size(); i++)
         {
-            temp.push_back(0);
+            if (s[i])
+                ix.push_back(i);
         }
-        adjacency.push_back(temp);
-    }
-
-    try
-    {
-        for (unsigned int edge = 0; edge < this->edges; ++edge)
+        if (ix.size() > 1)
         {
-            int a{-1}, b{-1}, vertex{0};
-            for (; vertex < vertices && a == -1; ++vertex)
+            for (size_t i{ 0 }; i < ix.size() - 1; ++i)
             {
-                if (this->matrix.at(edge).at(vertex))
-                    a = vertex;
+                for(size_t j = i+1; j < ix.size(); ++j)
+                    adjacency.at(ix.at(i)).at(ix.at(j)) = adjacency.at(ix.at(j)).at(ix.at(i)) = 1;
             }
-            for (; vertex < vertices && b == -1; ++vertex)
-            {
-                if (this->matrix.at(edge).at(vertex))
-                    b = vertex;
-            }
-            if (b == -1)
-                b = a;
-            adjacency.at(a).at(b) = adjacency.at(b).at(a) = 1;
         }
-    }
-    catch(const std::exception& e)
-    {
-        std::cerr << e.what() << '\n';
-        std::cerr << "Invalid matrix\n";
     }
     return AdjacencyMatrix(adjacency);
 }
