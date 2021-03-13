@@ -7,6 +7,9 @@
 #include "Matrix.hpp"
 
 typedef std::vector<std::list<unsigned int>> AdjacencyList;
+class AdjacencyMatrix;
+class Matrix;
+class MatrixOfIncidence;
 
 // Contains Adjacency List and its number of vertices
 // Used for storing Graphs (even if the Graph is declared
