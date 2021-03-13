@@ -176,16 +176,20 @@ Graph AdjacencyMatrix::toAdjacencyList()
     return Graph(adjList, this->vertices);
 }
 
+// tested, seems like works fine
 MatrixOfIncidence AdjacencyMatrix::toMatrixOfIncidence()
 {
     std::vector<std::vector<short int>> inc{};
-
+    
     int cols = this->matrix.size();
     if (!(cols > 0))
         return MatrixOfIncidence(0, 0);
 
     int rows = this->matrix.at(0).size();
     if (!(rows > 0))
+        return MatrixOfIncidence(0, 0);
+
+    if (!(rows == cols))
         return MatrixOfIncidence(0, 0);
 
     int edge = 0;
@@ -239,6 +243,7 @@ AdjacencyMatrix MatrixOfIncidence::toAdjacencyMatrix()
     return AdjacencyMatrix(adjacency);
 }
 
+// Tested, works fine
 inline Graph MatrixOfIncidence::toAdjacencyList()
 {
     return this->toAdjacencyMatrix().toAdjacencyList();
